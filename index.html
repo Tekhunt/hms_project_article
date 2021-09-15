@@ -276,31 +276,33 @@ python manage.py startapp name
 <pre class="line-numbers"> 
   <code class="language-python">
 
-    from django.db import models
-    from PIL import Image
-    class Customer(models.Model):
-        username=models.CharField(max_length=100)
-        password=models.CharField(max_length=100)
-        email=models.CharField(max_length=50)
-        profile_pic=models.ImageField(upload_to="media", height_field=None, width_field=None, max_length=None,blank=True)
-        phone_no=models.CharField(max_length=50)
-        address=models.TextField()
-        state=models.CharField(max_length=30,blank=True)
-        pin_code=models.IntegerField(blank=True)
-        def __str__(self):
-            return "Customer: "+self.username
-        
-    class RoomManager(models.Model):
-        username=models.CharField(max_length=100)
-        password=models.CharField(max_length=100)
-        email=models.CharField(max_length=50)
-        profile_pic=models.ImageField(upload_to="media", height_field=None, width_field=None, max_length=None,blank=True)
-        phone_no=models.CharField(max_length=50)
-        gender=models.CharField(max_length=20)
-        def __str__(self):
-            return "Room Manager: "+self.username
-    
-    
+                          from django.db import models
+                          from PIL import Image
+                          class Customer(models.Model):
+                              username=models.CharField(max_length=100)
+                              password=models.CharField(max_length=100)
+                              email=models.CharField(max_length=50)
+                              profile_pic=models.ImageField(upload_to="media", height_field=None, 
+                              width_field=None, max_length=None,blank=True)
+                              phone_no=models.CharField(max_length=50)
+                              address=models.TextField()
+                              state=models.CharField(max_length=30,blank=True)
+                              pin_code=models.IntegerField(blank=True)
+                              def __str__(self):
+                                  return "Customer: "+self.username
+                              
+                          class RoomManager(models.Model):
+                              username=models.CharField(max_length=100)
+                              password=models.CharField(max_length=100)
+                              email=models.CharField(max_length=50)
+                              profile_pic=models.ImageField(upload_to="media", height_field=None, 
+                              width_field=None, max_length=None,blank=True)
+                              phone_no=models.CharField(max_length=50)
+                              gender=models.CharField(max_length=20)
+                              def __str__(self):
+                                  return "Room Manager: "+self.username
+                          
+                          
  </code>
 </pre>
 
@@ -505,7 +507,7 @@ python manage.py startapp name
       
    </code>
 </pre>
-   <p>click <button>here</button> to download the Authentication app lofin, logout and manager_login  templates</p>
+   <p>click <button class="btn btn-primary">here</button> to download the Authentication app login, logout and manager_login  templates</p>
   
 
 
@@ -522,48 +524,389 @@ python manage.py startapp name
 <h2>booking app models</h2>
 <pre>
   <code>
-    from django.db import models
-from authentication.models import Customer,RoomManager
-from datetime import date
-class Contact(models.Model):
-    name=models.CharField(max_length=100)
-    email=models.CharField(max_length=100)
-    message=models.TextField(max_length=2000)
-    def __str__(self):
-        return self.name
-class Rooms(models.Model):
-    manager=models.ForeignKey(RoomManager, on_delete=models.CASCADE)
-    room_no=models.CharField(max_length=5, )
-    room_type=models.CharField(max_length=50)
-    is_available=models.BooleanField(default=True)
-    price=models.FloatField(default=1000.00)
-    no_of_days_advance=models.IntegerField()
-    start_date=models.DateField(auto_now=False, auto_now_add=False)
-    room_image=models.ImageField(upload_to="media", height_field=None, width_field=None, max_length=None,default='0.jpeg')
-    def __str__(self):
-        return "Room No: "+str(self.id)
-'''
-class RoomImage(models.Model):
-    room=models.ForeignKey(Rooms, on_delete=models.CASCADE)
-    room_image=models.ImageField(upload_to="media", height_field=None, width_field=None, max_length=None)
-'''
-class Booking(models.Model):
-    room_no=models.ForeignKey(Rooms, on_delete=models.CASCADE)
-    user_id=models.ForeignKey(Customer, on_delete=models.CASCADE)
-    start_day=models.DateField(auto_now=False, auto_now_add=False)
-    end_day=models.DateField(auto_now=False, auto_now_add=False)
-    amount=models.FloatField()
-    booked_on=models.DateTimeField(auto_now=True, auto_now_add=False)
-    def __str__(self):
-        return "Booking ID: "+str(self.id)
-    @property
-    def is_past_due(self):
-        return date.today()>self.end_day
+                                        from django.db import models
+                                        from authentication.models import Customer,RoomManager
+                                        from datetime import date
+                                        class Contact(models.Model):
+                                            name=models.CharField(max_length=100)
+                                            email=models.CharField(max_length=100)
+                                            message=models.TextField(max_length=2000)
+                                            def __str__(self):
+                                                return self.name
+                                        class Rooms(models.Model):
+                                            manager=models.ForeignKey(RoomManager, on_delete=models.CASCADE)
+                                            room_no=models.CharField(max_length=5, )
+                                            room_type=models.CharField(max_length=50)
+                                            is_available=models.BooleanField(default=True)
+                                            price=models.FloatField(default=1000.00)
+                                            no_of_days_advance=models.IntegerField()
+                                            start_date=models.DateField(auto_now=False, auto_now_add=False)
+                                            room_image=models.ImageField(upload_to="media", height_field=None, width_field=None, max_length=None,default='0.jpeg')
+                                            def __str__(self):
+                                                return "Room No: "+str(self.id)
+                                        '''
+                                        class RoomImage(models.Model):
+                                            room=models.ForeignKey(Rooms, on_delete=models.CASCADE)
+                                            room_image=models.ImageField(upload_to="media", height_field=None, width_field=None, max_length=None)
+                                        '''
+                                        class Booking(models.Model):
+                                            room_no=models.ForeignKey(Rooms, on_delete=models.CASCADE)
+                                            user_id=models.ForeignKey(Customer, on_delete=models.CASCADE)
+                                            start_day=models.DateField(auto_now=False, auto_now_add=False)
+                                            end_day=models.DateField(auto_now=False, auto_now_add=False)
+                                            amount=models.FloatField()
+                                            booked_on=models.DateTimeField(auto_now=True, auto_now_add=False)
+                                            def __str__(self):
+                                                return "Booking ID: "+str(self.id)
+                                            @property
+                                            def is_past_due(self):
+                                                return date.today()>self.end_day
+
+  </code>
+</pre>
+
+<h2>Views of the booking app</h2>
+<p>Below are the functions the describe the views of the booking app which we are gonna render in our template</p>
+
+<pre>
+  <code>
+                                                                from django.shortcuts import render,redirect
+                                                            from .models import Contact
+                                                            from .models import Rooms,Booking
+                                                            from authentication.models import Customer
+                                                            from django.contrib import messages
+                                                            from django.http import HttpResponse
+                                                            import datetime
+                                                            def index(request):
+                                                                return render(request,'booking/index.html',{})
+                                                            def contact(request):
+                                                                if request.method=="GET":
+                                                                return render(request,"contact/contact.html",{})
+                                                                else:
+                                                                username=request.POST['name']
+                                                                email=request.POST['email']
+                                                                message=request.POST['message']
+                                                                data=Contact(name=username,email=email,message=message)
+                                                                data.save()
+                                                                return render(request,"contact/contact.html",{'message':'Thank you for contacting us.'})
+                                                            def book(request):
+                                                                if request.method=="POST":
+                                                                    start_date=request.POST['start_date']
+                                                                    end_date=request.POST['end_date']
+                                                                    request.session['start_date']=start_date
+                                                                    request.session['end_date']=end_date
+                                                                    start_date=datetime.datetime.strptime(start_date, "%d/%b/%Y").date()
+                                                                    end_date=datetime.datetime.strptime(end_date, "%d/%b/%Y").date()
+                                                                    no_of_days=(end_date-start_date).days
+                                                                    data=Rooms.objects.filter(is_available=True,no_of_days_advance__gte=no_of_days,start_date__lte=start_date)
+                                                                    request.session['no_of_days']=no_of_days
+                                                                    return render(request,'booking/book.html',{'data':data})
+                                                                else:
+                                                                    return redirect('index')
+                                                            def book_now(request,id):
+                                                                if request.session.get("username",None) and request.session.get("type",None)=='customer':
+                                                                    if request.session.get("no_of_days",1):
+                                                                        no_of_days=request.session['no_of_days']
+                                                                        start_date=request.session['start_date']
+                                                                        end_date=request.session['end_date']
+                                                                        request.session['room_no']=id
+                                                                        data=Rooms.objects.get(room_no=id)
+                                                                        bill=data.price*int(no_of_days)
+                                                                        request.session['bill']=bill
+                                                                        roomManager=data.manager.username
+                                                                        return render(request,"booking/book-now.html",{"no_of_days":no_of_days,"room_no":id,"data":data,"bill":bill,
+                                                                        "roomManager":roomManager,"start":start_date,"end":end_date})
+                                                                    else:
+                                                                        return redirect("index")
+                                                                else:
+                                                                    next="book-now/"+id
+                                                                    return redirect('user_login')
+                                                                    
+                                                            def book_confirm(request):
+                                                                room_no=request.session['room_no']
+                                                                start_date=request.session['start_date']
+                                                                end_date=request.session['end_date']
+                                                                username=request.session['username']
+                                                                user_id=Customer.objects.get(username=username)
+                                                                room=Rooms.objects.get(room_no=room_no)
+                                                                amount=request.session['bill']
+                                                                start_date=datetime.datetime.strptime(start_date, "%d/%b/%Y").date()
+                                                                end_date=datetime.datetime.strptime(end_date, "%d/%b/%Y").date()
+                                                                data=Booking(room_no=room,start_day=start_date,end_day=end_date,amount=amount,user_id=user_id)
+                                                                data.save()
+                                                                room.is_available=False
+                                                                room.save()
+                                                                del request.session['start_date']
+                                                                del request.session['end_date']
+                                                                del request.session['bill']
+                                                                del request.session['room_no']
+                                                                messages.info(request,"Room has been successfully booked")
+                                                                return redirect('user_dashboard')
+
+                                                            def cancel_room(request,id):
+                                                                data=Booking.objects.get(id=id)
+                                                                room=data.room_no
+                                                                room.is_available=True
+                                                                room.save()
+                                                                data.delete()
+                                                                return HttpResponse("Booking Cancelled Successfully")
+
+                                                            def delete_room(request,id):
+                                                                data=Rooms.objects.get(id=id)
+                                                                manager=data.manager.username
+                                                                if manager==request.session['username']:
+                                                                    data.delete()
+                                                                    return HttpResponse("You have deleted the room successfully")
+                                                                else:
+                                                                    return HttpResponse("Invalid Request")
+
+
+
+  </code>
+</pre>
+
+<h2>URLs mapping of the booking app</h2>
+<p>Follow the code below to map the urls to each views function we created. </p>
+
+<pre>
+  <code>
+                        from django.urls import path
+                    from . import views
+                    urlpatterns=[
+                        path('',views.index,name='index'),
+                        path('book',views.book,name='book'),
+                        path('contact-us',views.contact,name='contact-us'),
+                        path('book-now/<str:id>',views.book_now,name='book-now'),
+                        path('cancel-room/<str:id>',views.cancel_room,name='cancel-room'),
+                        path('delete-room/<str:id>',views.delete_room,name='delete-room'),
+                        path('confirm-now-booking',views.book_confirm,name="book_confirm")
+
+                    ]
+
+          
+  </code>
+</pre>
+
+<p>click <button>here</button> to download the templates and static files for the booking app </p>
+
+<h2>Customer app views</h2>
+<p>Below are the code snippets for the customer view for our project</p>
+
+<pre>
+  <code>
+                                        from django.shortcuts import render,redirect
+                                    from authentication.models import Customer
+                                    from booking.models import Booking
+                                    import datetime
+                                    def dashboard(request):
+                                      if request.session.get('username',None) and request.session.get('type',None)=='manager':
+                                            return redirect('manager_dashboard')
+                                      if request.session.get('username',None) and request.session.get('type',None)=='customer':
+                                          username=request.session['username']
+                                          data=Customer.objects.get(username=username)
+                                          booking_data=Booking.objects.filter(user_id=data).order_by('-id')
+                                          counts=booking_data.filter(end_day__lt=datetime.datetime.now()).count()
+                                          available=len(booking_data)-counts
+                                          return render(request,"user_dash/index.html",{"data":booking_data,"count":counts,"available":available})
+                                      else:
+                                          return redirect("user_login")
+                                    def details(request,id,booking_id):
+                                        if not request.session.get('username',None):
+                                          return redirect('manager_login')
+                                        if request.session.get('username',None) and request.session.get('type',None)=='customer':
+                                            return redirect('user_dashboard')
+                                        try:
+                                            booking_data=Booking.objects.get(id=booking_id)
+                                            user=Customer.objects.get(id=id)
+                                            return render(request,"user_dash/details.html",{"user":user,"booking_data":booking_data})
+                                        except:
+                                            return redirect("/manager/dashboard1/")
+
+
   </code>
 </pre>
 
 
+<h2>URLs mapping of the customer views</h2>
 
+<pre>
+  <code>
+    from django.urls import path
+from . import views
+urlpatterns=[
+    path('',views.dashboard,name='user_dashboard'),
+    path('details/<int:id>/<int:booking_id>',views.details,name='user_details')
+]
+  </code>
+</pre>
+<p>click <button class="btn btn-primary">here</button> to download the Customer app templates and static files</p>
+
+
+<h2>Creating the receptionist app views</h2>
+
+<pre>
+  <code>
+                                                  from django.shortcuts import render,redirect
+                                              from authentication.models import RoomManager
+                                              from booking.models import Booking,Rooms
+                                              from datetime import date
+                                              from django.contrib import messages
+                                              import datetime
+                                              def dashboard(request):
+                                                if not request.session.get('username',None):
+                                                    return redirect('manager_login')
+                                                if request.session.get('username',None) and request.session.get('type',None)=='customer':
+                                                      return redirect('user_dashboard')
+                                                if request.session.get('username',None) and request.session.get('type',None)=='manager':
+                                                    username=request.session['username']
+                                                    data=RoomManager.objects.get(username=username)
+                                                    room_data=data.rooms_set.all()
+                                                    booked=room_data.filter(is_available=False).count()
+                                                    print(booked)
+                                                    return render(request,"manager_dash/index.html",{"room_data":room_data,"manager":data,"booked":booked})
+                                                else:
+                                                    return redirect("manager_login")
+                                              def add_room(request):
+                                                  if not request.session.get('username',None):
+                                                    return redirect('manager_login')
+                                                  if request.session.get('username',None) and request.session.get('type',None)=='customer':
+                                                      return redirect('user_dashboard')
+                                                  if request.method=="GET":
+                                                      return render(request,"manager_dash/add-room.html",{})
+                                                  else:
+                                                          room_no=request.POST['room_no']
+                                                          room_type=request.POST['room_type']
+                                                          price=request.POST['price']
+                                                          room_image=request.FILES.get('room_image',None)
+                                                          no_of_days_advance=request.POST['no_of_days_advance']
+                                                          start_day=request.POST['start_day']
+                                                          error=[]
+                                                          if(len(room_no)<1):
+                                                              error.append(1)
+                                                              messages.warning(request,"Room No Field must be atleast 3 digit like 100.")
+                                                          if(len(room_type)<5):
+                                                              error.append(1)
+                                                              messages.warning(request,"Select a valid Room Type.")
+                                                          if(len(price)<=2):
+                                                              error.append(1)
+                                                              messages.warning(request,"Please enter price")
+                                                          if(len(no_of_days_advance)<1):
+                                                              error.append(1)
+                                                              messages.warning(request,"Please add valid no of days a user can book room in advance.")
+                                                          if(len(start_day)<3):
+                                                              error.append(1)
+                                                              messages.warning(request,"Please add the starting day")
+                                                          if(not len(error)):
+                                                              manager=request.session['username']
+                                                              manager=RoomManager.objects.get(username=manager)
+                                                              room=Rooms(room_no=room_no,room_type=room_type,price=price,no_of_days_advance=no_of_days_advance,
+                                                              start_date=datetime.datetime.strptime(start_day, "%d %B, %Y").date(),room_image=room_image,manager=manager)
+                                                              room.save()
+                                                              messages.info(request,"Room Added Successfully")
+                                                              return redirect('/manager/dashboard1/')
+                                                          else:
+                                                              return redirect('/user/add-room/new/')
+                                              def update_room(request,room_no):
+                                                  if not request.session.get('username',None):
+                                                    return redirect('manager_login')
+                                                  if request.session.get('username',None) and request.session.get('type',None)=='customer':
+                                                      return redirect('user_dashboard')
+                                                  room=Rooms.objects.get(room_no=room_no)
+                                                  if request.method=="GET":
+                                                      return render(request,"manager_dash/edit-room.html",{"room":room})
+                                                  else:
+                                                          price=request.POST['price']
+                                                          no_of_days_advance=request.POST['no_of_days_advance']
+                                                          error=[]
+                                                          if(len(price)<=2):
+                                                              error.append(1)
+                                                              messages.warning(request,"Please enter correct price")
+                                                          if(len(no_of_days_advance)<1):
+                                                              error.append(1)
+                                                              messages.warning(request,"Please add valid no of days a user can book room in advance.")
+                                                          if(not len(error)):
+                                                              manager=request.session['username']
+                                                              manager=RoomManager.objects.get(username=manager)
+                                                              room.price=price
+                                                              room.no_of_days_advance=no_of_days_advance
+                                                              room.save()
+                                                              messages.info(request,"Room Data Updated Successfully")
+                                                              return redirect('/manager/dashboard1/')
+                                                          else:
+                                                              return redirect('/user/add-room/update/'+room.room_no,{"room":room})
+
+
+  </code>
+</pre>
+
+<h2>
+  MApping the receptionest app urls
+</h2>
+
+<pre>
+  <code>
+            from django.urls import path
+        from . import views
+        urlpatterns = [
+            path('',views.dashboard,name="manager_dashboard"),
+            path('new/',views.add_room,name="add_room"),
+            path('update/<int:room_no>/',views.update_room,name="update_room"),
+
+        ]
+
+  </code>
+</pre>
+
+<p>click <button class="btn btn-primary">here</button> to download the Receptionist app templates and static files</p>
+
+
+<h2>Configure the project urls.py file</h2>
+<p>We need to go to the project folder and open the urls.py module to route the urls of our apps. Follow the snippe below to do this</p>
+
+<pre>
+  <code>
+                            """room_slot URL Configuration
+
+                        The `urlpatterns` list routes URLs to views. For more information please see:
+                            https://docs.djangoproject.com/en/3.0/topics/http/urls/
+                        Examples:
+                        Function views
+                            1. Add an import:  from my_app import views
+                            2. Add a URL to urlpatterns:  path('', views.home, name='home')
+                        Class-based views
+                            1. Add an import:  from other_app.views import Home
+                            2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+                        Including another URLconf
+                            1. Import the include() function: from django.urls import include, path
+                            2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+                        """
+                        from django.contrib import admin
+                        from django.urls import path,include
+                        from django.conf import settings
+                        from django.conf.urls.static import static
+                        from authentication import views
+                        urlpatterns = [
+                            path('admin/', admin.site.urls),
+                            path('',include('booking.urls')),
+                            path('user/',include('authentication.urls')),
+                            path('manager/',include('authentication.urls')),
+                            path('logout',views.logout,name='logout'),
+                            path('api/',include('api.urls'))
+                        ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+  </code>
+</pre>
+
+
+<h2>Deploy project to Heroku</h2>
+
+<p>We will use Heroku to deploy this project. T do this you'll need an account with Heroku and a few configurations.
+  Please visit this <button>link</button> to learn about how to deploy django app to heroku and follow the steps outlined there.
+</p>
+
+<h5><i>Thank you!</i></h5>
 
 
 
